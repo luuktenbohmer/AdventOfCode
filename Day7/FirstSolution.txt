@@ -1,0 +1,77 @@
+using Day7;
+
+var lines = await File.ReadAllLinesAsync("Input/input.txt");
+var allDirs = new List<Dir>();
+
+var actions = new Dictionary<string, Func<Dir, string, Dir>>
+{
+    { "$ cd", Cd },
+    { "$ ls", Ls },
+};
+
+var rootDir = new Dir(null);
+var currentDir = rootDir;
+allDirs.Add(currentDir);
+foreach (var line in lines)
+{
+    foreach (var action in actions)
+    {
+        if (line.StartsWith(action.Key))
+        {
+            currentDir = action.Value(currentDir, line);
+            break;
+        }
+    }
+
+    if (line.StartsWith("$") || line.StartsWith("dir"))
+    {
+        continue;
+    }
+    var splitLine = line.Split(' ');
+    currentDir.Files.Add(int.Parse(splitLine[0]));
+}
+
+SetSizes(rootDir);
+var totalS = allDirs.Where(d => d.Size < 100_000).Sum(d => d.Size);
+var p1 = 1886043;
+var p2 = 3842121;
+Console.WriteLine("P1: " + totalS);
+
+var totalSize = 70_000_000;
+var totalNeeded = 30_000_000;
+var leftOver = totalSize - rootDir.Size;
+var needed = totalNeeded - leftOver;
+var directoryToDelete = allDirs.OrderBy(d => d.Size).Where(d => d.Size > needed).First().Size;
+
+Console.WriteLine("P2: " + directoryToDelete);
+
+Console.ReadKey();
+
+void SetSizes(Dir dir)
+{
+    foreach (var subDir in dir.Dirs)
+    {
+        SetSizes(subDir);
+    }
+
+    dir.Size = dir.Files.Sum() + dir.Dirs.Sum(d => d.Size);
+}
+
+Dir Cd(Dir current, string line)
+{
+    if (line.Split(' ').Last() == "..")
+    {
+        return current.Parrent!;
+    }
+
+    var newDir = new Dir(current);
+    current.Dirs.Add(newDir);
+    allDirs.Add(newDir);
+
+    return newDir;
+}
+
+Dir Ls(Dir current, string line)
+{
+    return current;
+}
