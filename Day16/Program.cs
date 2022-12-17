@@ -52,13 +52,14 @@ foreach (var fromValve in fromValves)
     }
 }
 
-// Setup orders
+// P1
 var watch = Stopwatch.StartNew();
 var resultP1 = GetP1(startingNode, toValves, 30, 0);
 watch.Stop();
 var p1Duration = watch.ElapsedMilliseconds;
 Console.WriteLine("P1: " + resultP1);
 
+// P2
 watch = Stopwatch.StartNew();
 var resultP2 = GetP2();
 watch.Stop();
