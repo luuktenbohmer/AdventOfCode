@@ -23,14 +23,14 @@ Console.WriteLine($"P1: {GetNumberOfPositionsWhichCannotContainBeacon(inputY, fa
 var pointP2 = GetPossibleBeaconPosition(inputMaxCoordinate);
 Console.WriteLine($"{pointP2.X}, {pointP2.Y}");
 
-long resultP2 = 4_000_000 * pointP2.X + pointP2.Y;
+long resultP2 = 4_000_000L * pointP2.X + pointP2.Y;
 
-Console.WriteLine($"P2: {GetPossibleBeaconPosition(inputMaxCoordinate)}");
+Console.WriteLine($"P2: {resultP2}");
 
 List<int> GetNumberOfPositionsWhichCannotContainBeacon(int y, bool includeBeacons)
 {
     return readings
-        .Select(r => r.GetNoBeaconPositions(y , includeBeacons))
+        .Select(r => r.GetNoBeaconPositions(y, includeBeacons))
         .SelectMany(x => x)
         .Distinct()
         .ToList();
@@ -40,15 +40,33 @@ Point GetPossibleBeaconPosition(int maxCoordinate)
 {
     for (int i = 0; i <= maxCoordinate; i++)
     {
-        var positions = GetNumberOfPositionsWhichCannotContainBeacon(i, true)
-            .Where(p => p >= 0 && p <= maxCoordinate)
+        var noBeaconRanges = readings
+            .Select(r => r.GetNoBeaconRange(i))
+            .OrderBy(r => r.min)
             .ToList();
-        if (positions.Count != maxCoordinate + 1)
+        var currentMax = 0;
+        foreach (var range in noBeaconRanges)
         {
-            var test = Enumerable.Range(0, maxCoordinate + 1);
-            var x = test.Except(positions).Single();
-            return new Point(x, i);
+            if (range.min > currentMax + 1)
+            {
+                return new Point(currentMax + 1, i);
+            }
+            currentMax = Math.Max(range.max, currentMax);
         }
+        //for (int j = 0; j < maxCoordinate; j++)
+        //{
+        //    if (noBeaconRanges.All(r => r.min > j && r.max < j))
+        //        return new Point(j, i);
+        //}
+        //var positions = GetNumberOfPositionsWhichCannotContainBeacon(i, true)
+        //    .Where(p => p >= 0 && p <= maxCoordinate)
+        //    .ToList();
+        //if (positions.Count != maxCoordinate + 1)
+        //{
+        //    var test = Enumerable.Range(0, maxCoordinate + 1);
+        //    var x = test.Except(positions).Single();
+        //    return new Point(x, i);
+        //}
     }
 
     return null;

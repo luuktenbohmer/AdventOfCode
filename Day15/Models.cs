@@ -18,6 +18,15 @@ public class Reading
 
         return result;
     }
+
+    public (int min, int max) GetNoBeaconRange(int y)
+    {
+        var yDiff = Math.Abs(Sensor.Y - y);
+        if (yDiff > Distance)
+            return (-1, -1);
+
+        return (Sensor.X - (Distance - yDiff), Sensor.X + (Distance - yDiff));
+    }
 }
 
 public class Point
