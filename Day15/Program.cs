@@ -53,20 +53,6 @@ Point GetPossibleBeaconPosition(int maxCoordinate)
             }
             currentMax = Math.Max(range.max, currentMax);
         }
-        //for (int j = 0; j < maxCoordinate; j++)
-        //{
-        //    if (noBeaconRanges.All(r => r.min > j && r.max < j))
-        //        return new Point(j, i);
-        //}
-        //var positions = GetNumberOfPositionsWhichCannotContainBeacon(i, true)
-        //    .Where(p => p >= 0 && p <= maxCoordinate)
-        //    .ToList();
-        //if (positions.Count != maxCoordinate + 1)
-        //{
-        //    var test = Enumerable.Range(0, maxCoordinate + 1);
-        //    var x = test.Except(positions).Single();
-        //    return new Point(x, i);
-        //}
     }
 
     return null;
