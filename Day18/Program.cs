@@ -1,4 +1,5 @@
 ﻿using Day18;
+using System.Diagnostics;
 
 var lines = await File.ReadAllLinesAsync("Input/input.txt");
 var points = lines.Select(l =>
