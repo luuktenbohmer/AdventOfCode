@@ -14,15 +14,13 @@ const resultExample1 = solution.solve?.(example);
 const result1 = solution.solve?.(input);
 
 console.log("Part 1");
-console.log("Example:", resultExample1);
-console.log("Result:", result1);
+console.log("Example:", resultExample1 ?? "TODO");
+console.log("Result:", result1 ?? "TODO");
 
 console.log();
 
 const resultExample2 = solution.solve2?.(example2.length > 0 ? example2 : example);
 const result2 = solution.solve2?.(input2.length > 0 ? input2 : input);
-if (resultExample2 !== undefined && result2 !== undefined) {
-  console.log("Part 2");
-  console.log("Example:", resultExample2);
-  console.log("Result:", result2);
-}
+console.log("Part 2");
+console.log("Example:", resultExample2 ?? "TODO");
+console.log("Result:", result2 ?? "TODO");
