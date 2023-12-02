@@ -2,7 +2,9 @@ declare global {
   interface Array<T> {
     sum(): number;
     sumBy(selector: (item: T) => number): number;
+    min(): number;
     minBy(selector: (item: T) => number): number;
+    max(): number;
     maxBy(selector: (item: T) => number): number;
     sortBy(selector: (item: T) => number, direction?: "asc" | "desc"): T[];
     groupBy(selector: (item: T) => string): { key: string; value: T[] }[];
@@ -17,11 +19,17 @@ Array.prototype.sumBy = function <T>(this: T[], selector: (item: T) => number) {
   return this.map(selector).sum();
 };
 
+Array.prototype.min = function (this: number[]) {
+  return Math.min(...this.filter((x) => x != null));
+};
 Array.prototype.minBy = function <T>(this: T[], selector: (item: T) => number) {
-  return Math.min(...this.map(selector));
+  return this.map(selector).min();
+};
+Array.prototype.max = function (this: number[]) {
+  return Math.max(...this.filter((x) => x != null));
 };
 Array.prototype.maxBy = function <T>(this: T[], selector: (item: T) => number) {
-  return Math.max(...this.map(selector));
+  return this.map(selector).max();
 };
 
 Array.prototype.sortBy = function <T>(this: T[], selector: (item: T) => number, direction: "asc" | "desc" = "asc") {
