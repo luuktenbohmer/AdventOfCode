@@ -9,6 +9,7 @@ declare global {
     sortBy(selector: (item: T) => number, direction?: "asc" | "desc"): T[];
     groupBy(selector: (item: T) => string): { key: string; value: T[] }[];
     selectMany<K>(selector: (item: T) => K[]): K[];
+    distinct(): T[];
   }
 }
 
@@ -76,4 +77,8 @@ Array.prototype.groupBy = function <T>(this: T[], selector: (item: T) => string)
     key,
     value: grouped[key] as T[],
   }));
+};
+
+Array.prototype.distinct = function <T>(this: T[]) {
+  return [...new Set(this)];
 };
