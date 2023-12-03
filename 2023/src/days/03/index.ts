@@ -112,8 +112,8 @@ export const solve2 = (input: string[]) => {
       }
 
       const adjacentCells = getAdjacentCells(grid, x, y);
-      // @ts-ignore
-      const adjacentNumbers: NumberCell[] = adjacentCells.filter((c) => c?.type === "number").distinct();
+      const isNumberCell = (cell: Cell): cell is NumberCell => cell.type === "number";
+      const adjacentNumbers: NumberCell[] = adjacentCells.filter(isNumberCell).distinct();
       if (adjacentNumbers.length === 2) {
         gears.push([adjacentNumbers[0].value, adjacentNumbers[1].value]);
       }
