@@ -92,13 +92,13 @@ export const solve = (input: string[]) => {
       }
 
       const adjacentCells = getAdjacentCells(grid, x, y);
-      if (adjacentCells.some((c) => c?.type === "symbol")) {
+      if (adjacentCells.some((c) => c?.type === "symbol" || c?.type === "gear")) {
         numbers.push(cell);
       }
     }
   }
 
-  return numbers.distinct().sumBy((n) => n.value);
+  return numbers.distinct().sum((n) => n.value);
 };
 
 export const solve2 = (input: string[]) => {
