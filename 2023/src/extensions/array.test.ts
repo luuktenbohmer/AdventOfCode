@@ -96,4 +96,10 @@ describe("Array", () => {
       expect(input.groupBy((x) => x.group)).toEqual(expected);
     });
   });
+
+  describe("intersect", () => {
+    it("returns the intersection of the arrays", () => {
+      expect([1, 2, 3].intersect([2, 3, 4])).toEqual([2, 3]);
+    });
+  });
 });

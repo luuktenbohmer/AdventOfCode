@@ -13,6 +13,7 @@ declare global {
     groupBy(selector: (item: T) => string): { key: string; value: T[] }[];
     selectMany<K>(selector: (item: T) => K[]): K[];
     distinct(): T[];
+    intersect(other: T[]): T[];
   }
 }
 
@@ -105,4 +106,8 @@ Array.prototype.selectMany = function <T, K>(this: T[], selector: (item: T) => K
 
 Array.prototype.distinct = function <T>(this: T[]) {
   return [...new Set(this)];
+};
+
+Array.prototype.intersect = function <T>(this: T[], other: T[]) {
+  return this.filter((x) => other.includes(x));
 };
