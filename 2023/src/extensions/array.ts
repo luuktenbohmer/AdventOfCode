@@ -5,15 +5,27 @@ declare global {
 
     min(this: number[]): number;
     min(selector: (item: T) => number): number;
+    minBy(selector: (item: T) => number): T;
 
     max(): number;
     max(selector: (item: T) => number): number;
+    maxBy(selector: (item: T) => number): T;
 
     sortBy<K extends number | string>(selector: (item: T) => K, direction?: "asc" | "desc"): T[];
     groupBy(selector: (item: T) => string): { key: string; value: T[] }[];
     selectMany<K>(selector: (item: T) => K[]): K[];
+
     distinct(): T[];
+    distinctBy(selector: (item: T) => unknown): T[];
+
     intersect(other: T[]): T[];
+    intersectBy(other: T[], selector: (item: T) => unknown): T[];
+
+    except(other: T[]): T[];
+    exceptBy(other: T[], selector: (item: T) => unknown): T[];
+
+    trimAll(this: string[]): string[];
+    removeFalsy(this: (T | null | undefined)[]): T[];
   }
 }
 
@@ -39,6 +51,16 @@ Array.prototype.min = function <T>(this: T[], selector?: (item: T) => number) {
   return Math.min(...array.filter((x) => x != null));
 };
 
+Array.prototype.minBy = function <T>(this: T[], selector: (item: T) => number) {
+  if (this.length === 0) {
+    throw new Error("Cannot get min of empty array");
+  }
+
+  const array = this.map(selector);
+  const min = Math.min(...array.filter((x) => x != null));
+  return this[array.indexOf(min)];
+};
+
 Array.prototype.max = function <T>(this: T[], selector?: (item: T) => number) {
   if (this.length === 0) {
     throw new Error("Cannot get max of empty array");
@@ -55,6 +77,16 @@ Array.prototype.max = function <T>(this: T[], selector?: (item: T) => number) {
 function isNumberSelector<T>(array: T[], selector: (item: T) => string | number): selector is (item: T) => number {
   return typeof selector(array[0]) === "number";
 }
+
+Array.prototype.maxBy = function <T>(this: T[], selector: (item: T) => number) {
+  if (this.length === 0) {
+    throw new Error("Cannot get max of empty array");
+  }
+
+  const array = this.map(selector);
+  const max = Math.max(...array.filter((x) => x != null));
+  return this[array.indexOf(max)];
+};
 
 Array.prototype.sortBy = function <T, K extends string | number>(
   this: T[],
@@ -108,6 +140,41 @@ Array.prototype.distinct = function <T>(this: T[]) {
   return [...new Set(this)];
 };
 
+Array.prototype.distinctBy = function <T>(this: T[], selector: (item: T) => string) {
+  const set = new Set();
+  return this.filter((item) => {
+    const key = selector(item);
+    if (set.has(key)) {
+      return false;
+    }
+
+    set.add(key);
+    return true;
+  });
+};
+
 Array.prototype.intersect = function <T>(this: T[], other: T[]) {
   return this.filter((x) => other.includes(x));
+};
+
+Array.prototype.intersectBy = function <T>(this: T[], other: T[], selector: (item: T) => string) {
+  const otherSet = new Set(other.map(selector));
+  return this.filter((item) => otherSet.has(selector(item)));
+};
+
+Array.prototype.except = function <T>(this: T[], other: T[]) {
+  return this.filter((x) => !other.includes(x));
+};
+
+Array.prototype.exceptBy = function <T>(this: T[], other: T[], selector: (item: T) => string) {
+  const otherSet = new Set(other.map(selector));
+  return this.filter((item) => !otherSet.has(selector(item)));
+};
+
+Array.prototype.trimAll = function (this: string[]) {
+  return this.map((x) => x.trim());
+};
+
+Array.prototype.removeFalsy = function <T>(this: (T | null | undefined)[]) {
+  return this.filter((x) => x);
 };

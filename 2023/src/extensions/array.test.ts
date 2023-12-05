@@ -25,6 +25,21 @@ describe("Array", () => {
     });
   });
 
+  describe("minBy", () => {
+    it("returns the min of the array by the selector", () => {
+      const i1 = { value: 1 };
+      const i2 = { value: 2 };
+      const i3 = { value: 3 };
+
+      const input = [i1, i2, i3];
+      expect(input.minBy((x) => x.value)).toEqual(i1);
+    });
+
+    it("throws an error if the array is empty", () => {
+      expect(() => [].minBy((x) => x)).toThrowError("Cannot get min of empty array");
+    });
+  });
+
   describe("max", () => {
     it("returns the max of the array", () => {
       expect([6, 1, 3].max()).toEqual(6);
@@ -36,6 +51,21 @@ describe("Array", () => {
 
     it("throws an error if the array is empty", () => {
       expect(() => [].max()).toThrowError("Cannot get max of empty array");
+    });
+  });
+
+  describe("maxBy", () => {
+    it("returns the max of the array by the selector", () => {
+      const i1 = { value: 1 };
+      const i2 = { value: 2 };
+      const i3 = { value: 3 };
+
+      const input = [i1, i2, i3];
+      expect(input.maxBy((x) => x.value)).toEqual(i3);
+    });
+
+    it("throws an error if the array is empty", () => {
+      expect(() => [].maxBy((x) => x)).toThrowError("Cannot get max of empty array");
     });
   });
 
@@ -71,6 +101,17 @@ describe("Array", () => {
     });
   });
 
+  describe("distinctBy", () => {
+    it("returns the distinct values of the array by the selector", () => {
+      const i1 = { value: 1 };
+      const i2 = { value: 2 };
+      const i3 = { value: 3 };
+
+      const input = [i1, i2, i3, i1, i2, i3];
+      expect(input.distinctBy((x) => x.value)).toEqual([i1, i2, i3]);
+    });
+  });
+
   describe("selectMany", () => {
     it("returns the flattened array", () => {
       expect(
@@ -100,6 +141,34 @@ describe("Array", () => {
   describe("intersect", () => {
     it("returns the intersection of the arrays", () => {
       expect([1, 2, 3].intersect([2, 3, 4])).toEqual([2, 3]);
+    });
+  });
+
+  describe("intersectBy", () => {
+    it("returns the intersection of the arrays by the selector", () => {
+      const i1 = { value: 1 };
+      const i2 = { value: 2 };
+      const i3 = { value: 3 };
+
+      const input = [i1, i2, i3];
+      expect(input.intersectBy([i2, i3, { value: 4 }], (x) => x.value)).toEqual([i2, i3]);
+    });
+  });
+
+  describe("except", () => {
+    it("returns the difference of the arrays", () => {
+      expect([1, 2, 3].except([2, 3, 4])).toEqual([1]);
+    });
+  });
+
+  describe("exceptBy", () => {
+    it("returns the difference of the arrays by the selector", () => {
+      const i1 = { value: 1 };
+      const i2 = { value: 2 };
+      const i3 = { value: 3 };
+
+      const input = [i1, i2, i3];
+      expect(input.exceptBy([i2, i3, { value: 4 }], (x) => x.value)).toEqual([i1]);
     });
   });
 });
