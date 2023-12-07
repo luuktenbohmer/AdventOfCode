@@ -12,7 +12,7 @@ declare global {
     maxBy(selector: (item: T) => number): T;
 
     sortBy<K extends number | string>(selector: (item: T) => K, direction?: "asc" | "desc"): T[];
-    groupBy(selector: (item: T) => string): { key: string; value: T[] }[];
+    groupBy(selector: (item: T) => string): KeyValue<T>[];
     selectMany<K>(selector: (item: T) => K[]): K[];
 
     distinct(): T[];
@@ -28,6 +28,8 @@ declare global {
     removeFalsy(this: (T | null | undefined)[]): T[];
   }
 }
+
+export type KeyValue<T> = { key: string; value: T[] };
 
 Array.prototype.sum = function <T>(this: T[] | number[], selector?: (item: any) => number) {
   let array = this as number[];
