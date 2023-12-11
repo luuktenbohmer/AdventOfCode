@@ -1,7 +1,3 @@
-type Tile = {
-  char: string;
-};
-
 type Point = [number, number];
 
 type Direction = "north" | "east" | "south" | "west";
@@ -91,6 +87,7 @@ export const solve = (grid: string[]) => {
   return count;
 };
 
+// There might have been an easier solution...
 export const solve2 = (grid: string[]) => {
   const s = getS(grid);
   const connected = getConnected(grid, s);
