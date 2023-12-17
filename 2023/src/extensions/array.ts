@@ -26,6 +26,9 @@ declare global {
 
     trimAll(this: string[]): string[];
     removeFalsy(this: (T | null | undefined)[]): T[];
+
+    transpose(this: string[]): string[];
+    transpose(this: T[][]): T[][];
   }
 }
 
@@ -179,4 +182,19 @@ Array.prototype.trimAll = function (this: string[]) {
 
 Array.prototype.removeFalsy = function <T>(this: (T | null | undefined)[]) {
   return this.filter((x) => x);
+};
+
+function isStringArray<T>(array: string[] | T[][]): array is string[] {
+  return typeof array[0] === "string";
+}
+
+// @ts-ignore
+Array.prototype.transpose = function <T>(this: string[] | T[][]) {
+  if (this.length === 0) return [];
+
+  if (isStringArray(this)) {
+    return this[0].split("").map((_, colIndex) => this.map((row) => row[colIndex]).join(""));
+  } else {
+    return this[0].map((_, colIndex) => this.map((row) => row[colIndex]));
+  }
 };

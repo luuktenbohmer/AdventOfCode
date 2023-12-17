@@ -171,4 +171,10 @@ describe("Array", () => {
       expect(input.exceptBy([i2, i3, { value: 4 }], (x) => x.value)).toEqual([i1]);
     });
   });
+
+  describe("transpose", () => {
+    it("transposes the array", () => {
+      expect(["123", "456"].transpose()).toEqual(["14", "25", "36"]);
+    });
+  });
 });
