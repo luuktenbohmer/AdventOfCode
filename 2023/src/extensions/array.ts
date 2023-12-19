@@ -29,6 +29,8 @@ declare global {
 
     transpose(this: string[]): string[];
     transpose(this: T[][]): T[][];
+
+    rotate(this: string[]): string[];
   }
 }
 
@@ -197,4 +199,13 @@ Array.prototype.transpose = function <T>(this: string[] | T[][]) {
   } else {
     return this[0].map((_, colIndex) => this.map((row) => row[colIndex]));
   }
+};
+
+Array.prototype.rotate = function (this: string[]) {
+  if (this.length === 0) return [];
+  return this[0].split("").map((val, index) =>
+    this.map((row) => row[index])
+      .reverse()
+      .join("")
+  );
 };
